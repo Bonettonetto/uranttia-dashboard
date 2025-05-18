@@ -340,16 +340,3 @@ if st.button("🔄 Recarregar"):
     st.experimental_rerun()
 
 
-# 4. Definir authtoken ngrok
-from pyngrok import conf, ngrok
-import time
-
-conf.get_default().auth_token = "2xC4dToeCfBAwLac8gytEAD0mtp_7TPvdCf9ZJiMQLF5QZJna"
-
-# 5. Rodar o Streamlit com ngrok
-ngrok.kill()
-public_url = ngrok.connect(8501)
-print(f'✅ Acesse o painel aqui: {public_url}')
-
-!streamlit run app.py &
-time.sleep(5)
