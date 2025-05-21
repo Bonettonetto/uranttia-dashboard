@@ -30,12 +30,7 @@ st.title("📊 Painel de Cargas - Uranttia Transportes")
 
 if st.button("🔄 Recarregar painel"):
     st.rerun()
-
-
-# Mostra os dados
-st.subheader("📄 Tabela de Dados")
-st.dataframe(df)
-
+    
 
 
 
@@ -185,44 +180,6 @@ st.pyplot(fig)
 
 
 
-# TABELA
-
-st.subheader("📒 Tabela Geral de Lançamentos (Todos os Meses)")
-
-# Prepara todos os dados (sem filtro por mês)
-df_geral = df[['Descrição', 'Tipo', 'Data', 'Entrada', 'Saída', 'Mendonça']].copy()
-
-# Garante que a coluna Data esteja em datetime
-df_geral['Data'] = pd.to_datetime(df_geral['Data'], errors='coerce')
-
-# Calcula Lucro
-df_geral['Lucro'] = df_geral['Entrada'] + df_geral['Saída'] + df_geral['Mendonça']
-
-# Reorganiza colunas
-df_geral = df_geral[['Descrição', 'Tipo', 'Data', 'Entrada', 'Saída', 'Mendonça', 'Lucro']]
-
-# Aplica formatação condicional por sinal (positivo/negativo)
-def cor_por_valor(val):
-    if isinstance(val, (int, float)):
-        return 'color: green;' if val > 0 else 'color: red;'
-    return ''
-
-# Estiliza a tabela
-styled_geral = (
-    df_geral.style
-    .format({
-        'Entrada': 'R$ {:,.2f}',
-        'Saída': 'R$ {:,.2f}',
-        'Mendonça': 'R$ {:,.2f}',
-        'Lucro': 'R$ {:,.2f}',
-    })
-    .applymap(cor_por_valor, subset=['Entrada', 'Saída', 'Mendonça', 'Lucro'])
-)
-
-# Exibe no painel
-st.dataframe(styled_geral, use_container_width=True)
-
-
 
 
 # GRÁFICO HISTÓRICO
@@ -328,6 +285,44 @@ else:
 
 
 
+
+
+# TABELA
+
+st.subheader("📒 Tabela Geral de Lançamentos (Todos os Meses)")
+
+# Prepara todos os dados (sem filtro por mês)
+df_geral = df[['Descrição', 'Tipo', 'Data', 'Entrada', 'Saída', 'Mendonça']].copy()
+
+# Garante que a coluna Data esteja em datetime
+df_geral['Data'] = pd.to_datetime(df_geral['Data'], errors='coerce')
+
+# Calcula Lucro
+df_geral['Lucro'] = df_geral['Entrada'] + df_geral['Saída'] + df_geral['Mendonça']
+
+# Reorganiza colunas
+df_geral = df_geral[['Descrição', 'Tipo', 'Data', 'Entrada', 'Saída', 'Mendonça', 'Lucro']]
+
+# Aplica formatação condicional por sinal (positivo/negativo)
+def cor_por_valor(val):
+    if isinstance(val, (int, float)):
+        return 'color: green;' if val > 0 else 'color: red;'
+    return ''
+
+# Estiliza a tabela
+styled_geral = (
+    df_geral.style
+    .format({
+        'Entrada': 'R$ {:,.2f}',
+        'Saída': 'R$ {:,.2f}',
+        'Mendonça': 'R$ {:,.2f}',
+        'Lucro': 'R$ {:,.2f}',
+    })
+    .applymap(cor_por_valor, subset=['Entrada', 'Saída', 'Mendonça', 'Lucro'])
+)
+
+# Exibe no painel
+st.dataframe(styled_geral, use_container_width=True)
 
 
 
